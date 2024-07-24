@@ -33,8 +33,9 @@ class MyRobot(wpilib.TimedRobot):
         # gearbox is constructed, you might have to invert the left side instead.
         right_motor_1.setInverted(True)
 
-    def teleopPeriodic(self):
+    def RobotPeriodic(self):
         # Drive with arcade drive.
         # That means that the Y axis drives forward
         # and backward, and the X turns left and right.
-        self.robotDrive.arcadeDrive(self.stick.getY(), self.stick.getX())
+        print(self.stick.getY())
+        self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
