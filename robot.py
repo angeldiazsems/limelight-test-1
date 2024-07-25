@@ -7,7 +7,7 @@
 
 import wpilib
 import wpilib.drive
-import phoenix6
+import phoenix5
 import constants
 
 class MyRobot(wpilib.TimedRobot):
@@ -19,12 +19,12 @@ class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
         """Robot initialization function"""
 
-        left_motor_1 = wpilib.PWMTalonFX(constants.LEFT_MOTOR_1_ID)
-        left_motor_2 = wpilib.PWMTalonFX(constants.LEFT_MOTOR_2_ID)
-        right_motor_1 = wpilib.PWMTalonFX(constants.RIGHT_MOTOR_1_ID)
-        right_motor_2 = wpilib.PWMTalonFX(constants.RIGHT_MOTOR_2_ID)
-        left_motor_1.addFollower(left_motor_2)
-        right_motor_1.addFollower(right_motor_2)
+        left_motor_1 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_1_ID)
+        left_motor_2 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_2_ID)
+        right_motor_1 = phoenix5.WPI_TalonSRX(constants.RIGHT_MOTOR_1_ID)
+        right_motor_2 = phoenix5.WPI_TalonSRX(constants.RIGHT_MOTOR_2_ID)
+        left_motor_1.follow(left_motor_2)
+        right_motor_1.follow(right_motor_2)
         self.robot_drive = wpilib.drive.DifferentialDrive(left_motor_1, right_motor_1)
         self.stick = wpilib.Joystick(constants.DRIVE_JOYSTICK_PORT)
 
@@ -33,9 +33,17 @@ class MyRobot(wpilib.TimedRobot):
         # gearbox is constructed, you might have to invert the left side instead.
         right_motor_1.setInverted(True)
 
-    def RobotPeriodic(self):
+    # def RobotPeriodic(self):
+    #     # Drive with arcade drive.
+    #     # That means that the Y axis drives forward
+    #     # and backward, and the X turns left and right.
+    #     self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
+        # self.left_motor_1.set(self.stick.getY())
+
+
+    def teleopPeriodic(self):
         # Drive with arcade drive.
         # That means that the Y axis drives forward
         # and backward, and the X turns left and right.
-        print(self.stick.getY())
-        self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
+        self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getZ())
+        # self.left_motor_1.set(self.stick.getY())

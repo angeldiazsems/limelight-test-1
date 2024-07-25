@@ -17,7 +17,7 @@ robotpy_extras = [
     # "cscore",
     # "navx",
     # "pathplannerlib",
-    # "phoenix5",
+     "phoenix5",
     "phoenix6",
     # "photonvision",
     # "playingwithfusion",
@@ -31,4 +31,5 @@ robotpy_extras = [
 requires = [
     "pylint>=3.2.6",
     "mypy>=1.11.0",
+    "robotpy-ctre>=2024.1.3"
 ]
