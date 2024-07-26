@@ -53,5 +53,4 @@ class MyRobot(wpilib.TimedRobot):
             self.pitch_motor.set(math.cos(self.stick.getPOV(0) * math.pi / 180))
         else :
             self.pitch_motor.set(0)
-        # self.left_motor_1.set(self.stick.getY())
             
