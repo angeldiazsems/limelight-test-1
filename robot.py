@@ -9,15 +9,18 @@ import wpilib
 import wpilib.drive
 import phoenix5
 import constants
+import math
 
 class MyRobot(wpilib.TimedRobot):
     """
     This is a demo program showing the use of the DifferentialDrive class.
     Runs the motors with arcade steering.
-    """
+    """  
 
     def robotInit(self):
         """Robot initialization function"""
+        self.pitch_motor = phoenix5.WPI_TalonFX(constants.PITCH_MOTOR_ID)
+        self.POVUpCheck = False
 
         left_motor_1 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_1_ID)
         left_motor_2 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_2_ID)
@@ -46,4 +49,9 @@ class MyRobot(wpilib.TimedRobot):
         # That means that the Y axis drives forward
         # and backward, and the X turns left and right.
         self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getZ())
+        if self.stick.getPOV(0) != -1 :
+            self.pitch_motor.set(math.cos(self.stick.getPOV(0) * math.pi / 180))
+        else :
+            self.pitch_motor.set(0)
         # self.left_motor_1.set(self.stick.getY())
+            
