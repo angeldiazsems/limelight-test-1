@@ -30,7 +30,20 @@ class MyRobot(wpilib.TimedRobot):
         right_motor_1.follow(right_motor_2)
         self.robot_drive = wpilib.drive.DifferentialDrive(left_motor_1, right_motor_1)
         self.stick = wpilib.Joystick(constants.DRIVE_JOYSTICK_PORT)
+        pneumatic_hub = wpilib.PneumaticHub(constants.PNEUMATIC_HUB_PORT)
+        self.upper_solenoid_1 = pneumatic_hub.makeSolenoid(constants.UPPER_SOLENOID_1_CHANNEL)
+        self.upper_solenoid_2 = pneumatic_hub.makeSolenoid(constants.UPPER_SOLENOID_2_CHANNEL)
+        self.upper_solenoid_3 = pneumatic_hub.makeSolenoid(constants.UPPER_SOLENOID_3_CHANNEL)
+        self.lower_solenoid_1 = pneumatic_hub.makeSolenoid(constants.LOWER_SOLENOID_1_CHANNEL)
+        self.lower_solenoid_2 = pneumatic_hub.makeSolenoid(constants.LOWER_SOLENOID_2_CHANNEL)
+        self.lower_solenoid_3 = pneumatic_hub.makeSolenoid(constants.LOWER_SOLENOID_3_CHANNEL)
 
+        self.upper_solenoid_1.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
+        self.upper_solenoid_2.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
+        self.upper_solenoid_3.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
+        self.lower_solenoid_1.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
+        self.lower_solenoid_2.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
+        self.lower_solenoid_3.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
         # We need to invert one side of the drivetrain so that positive voltages
         # result in both sides moving forward. Depending on how your robot's
         # gearbox is constructed, you might have to invert the left side instead.
@@ -43,6 +56,16 @@ class MyRobot(wpilib.TimedRobot):
     #     self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
         # self.left_motor_1.set(self.stick.getY())
 
+    def fireUpper(self) :
+        self.upper_solenoid_1.startPulse()
+        self.upper_solenoid_2.startPulse()
+        self.upper_solenoid_3.startPulse()
+
+    def fireLower(self) :
+        self.lower_solenoid_1.startPulse()
+        self.lower_solenoid_2.startPulse()
+        self.lower_solenoid_3.startPulse()
+
 
     def teleopPeriodic(self):
         # Drive with arcade drive.
@@ -53,4 +76,8 @@ class MyRobot(wpilib.TimedRobot):
             self.pitch_motor.set(math.cos(self.stick.getPOV(0) * math.pi / 180))
         else :
             self.pitch_motor.set(0)
-            
+
+        if self.stick.getRawButton(constants.FIRE_UPPER_BUTTON_ID) :
+            self.fireUpper()    
+        if self.stick.getRawButton(constants.FIRE_LOWER_BUTTON_ID) :
+            self.fireLower()
