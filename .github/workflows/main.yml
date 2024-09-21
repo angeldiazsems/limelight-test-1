@@ -32,13 +32,4 @@ jobs:
       - name: Run pylint
         run: |
           source venv/bin/activate
-          pylint --score=10 .
-
-      - name: Check results
-        run: |
-          if [ ${{ success() }} == true ]; then
-            echo "All checks passed!"
-          else
-            echo "Checks failed!"
-            exit 1
-          fi
+          pylint $(git ls-files '*.py')
