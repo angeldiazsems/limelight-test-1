@@ -5,6 +5,8 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
+#pylint: disable=attribute-defined-outside-init, missing-function-docstring, missing-module-docstring, missing-class-docstring
+
 import wpilib
 import wpilib.drive
 import phoenix5
@@ -20,7 +22,7 @@ class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
         """Robot initialization function"""
         self.pitch_motor = phoenix5.WPI_TalonFX(constants.PITCH_MOTOR_ID)
-        self.POVUpCheck = False
+        self.pov_up_check = False
 
         left_motor_1 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_1_ID)
         left_motor_2 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_2_ID)
@@ -56,12 +58,12 @@ class MyRobot(wpilib.TimedRobot):
     #     self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
         # self.left_motor_1.set(self.stick.getY())
 
-    def fireUpper(self) :
+    def fire_upper(self) :
         self.upper_solenoid_1.startPulse()
         self.upper_solenoid_2.startPulse()
         self.upper_solenoid_3.startPulse()
 
-    def fireLower(self) :
+    def fire_lower(self) :
         self.lower_solenoid_1.startPulse()
         self.lower_solenoid_2.startPulse()
         self.lower_solenoid_3.startPulse()
@@ -78,6 +80,6 @@ class MyRobot(wpilib.TimedRobot):
             self.pitch_motor.set(0)
 
         if self.stick.getRawButton(constants.FIRE_UPPER_BUTTON_ID) :
-            self.fireUpper()    
+            self.fire_upper()
         if self.stick.getRawButton(constants.FIRE_LOWER_BUTTON_ID) :
-            self.fireLower()
+            self.fire_lower()
