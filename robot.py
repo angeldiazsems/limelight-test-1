@@ -5,19 +5,17 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
-#pylint: disable=attribute-defined-outside-init, missing-function-docstring, missing-module-docstring, missing-class-docstring
-
+import math
 import wpilib
 import wpilib.drive
 import phoenix5
 import constants
-import math
 
 class MyRobot(wpilib.TimedRobot):
     """
     This is a demo program showing the use of the DifferentialDrive class.
     Runs the motors with arcade steering.
-    """  
+    """
 
     def robotInit(self):
         """Robot initialization function"""
