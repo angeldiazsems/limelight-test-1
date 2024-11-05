@@ -10,13 +10,18 @@ import wpilib.drive
 import phoenix5
 import constants
 import math
+import limelight 
+import limelightresults # type: ignore
+import json
+import time
+
+
 
 class MyRobot(wpilib.TimedRobot):
     """
     This is a demo program showing the use of the DifferentialDrive class.
     Runs the motors with arcade steering.
     """  
-
     def robotInit(self):
         """Robot initialization function"""
         self.pitch_motor = phoenix5.WPI_TalonFX(constants.PITCH_MOTOR_ID)
@@ -30,6 +35,10 @@ class MyRobot(wpilib.TimedRobot):
         right_motor_1.follow(right_motor_2)
         self.robot_drive = wpilib.drive.DifferentialDrive(left_motor_1, right_motor_1)
         self.stick = wpilib.Joystick(constants.DRIVE_JOYSTICK_PORT)
+
+        self.discovered_limelights = limelight.discover_limelights(debug=True)
+        print("discovered limelights:", self.discovered_limelights)
+
 
         # We need to invert one side of the drivetrain so that positive voltages
         # result in both sides moving forward. Depending on how your robot's
@@ -53,4 +62,28 @@ class MyRobot(wpilib.TimedRobot):
             self.pitch_motor.set(math.cos(self.stick.getPOV(0) * math.pi / 180))
         else :
             self.pitch_motor.set(0)
+
+        if self.discovered_limelights:
+            limelight_address = self.discovered_limelights[0] 
+            ll = limelight.Limelight(limelight_address)
+            results = ll.get_results()
+            status = ll.get_status()
+            if results["botpose_tagcount"] != 0:
+                
+            
+           
+
+           
+            # print("-----")
+                print("targeting results:", results["Fiducial"][0]["fID"])
+            # print("-----")
+            # print("status:", status)
+            # print("-----")
+            # print("temp:", ll.get_temp())
+            # print("-----")
+            # print("name:", ll.get_name())
+            # print("-----")
+            # print("fps:", ll.get_fps())
+            # print("-----")
+            # print("hwreport:", ll.hw_report())
             

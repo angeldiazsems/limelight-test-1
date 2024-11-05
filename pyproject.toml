@@ -25,12 +25,13 @@ robotpy_extras = [
     # "romi",
     # "sim",
     # "xrp",
-    "limelightlib-python",    
 ]
 
 # Other pip packages to install
 requires = [
     "pylint>=3.2.6",
     "mypy>=1.11.0",
-    "robotpy-ctre>=2024.1.3"
+    "robotpy-ctre>=2024.1.3",
+    "limelightlib-python>=0.9.6",   
+
 ]
