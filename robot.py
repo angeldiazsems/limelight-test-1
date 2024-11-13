@@ -11,11 +11,6 @@ import phoenix5
 import constants
 import math
 import limelight 
-import limelightresults # type: ignore
-import json
-import time
-
-
 
 class MyRobot(wpilib.TimedRobot):
     """
@@ -69,21 +64,4 @@ class MyRobot(wpilib.TimedRobot):
             results = ll.get_results()
             status = ll.get_status()
             if results["botpose_tagcount"] != 0:
-                
-            
-           
-
-           
-            # print("-----")
                 print("targeting results:", results["Fiducial"][0]["fID"])
-            # print("-----")
-            # print("status:", status)
-            # print("-----")
-            # print("temp:", ll.get_temp())
-            # print("-----")
-            # print("name:", ll.get_name())
-            # print("-----")
-            # print("fps:", ll.get_fps())
-            # print("-----")
-            # print("hwreport:", ll.hw_report())
-            

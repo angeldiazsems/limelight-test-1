@@ -1,3 +1,5 @@
+""" Robot and control constants. """
+
 LEFT_MOTOR_1_ID = 1
 LEFT_MOTOR_2_ID = 3
 RIGHT_MOTOR_1_ID = 2
