@@ -10,13 +10,14 @@ import wpilib
 import wpilib.drive
 import phoenix5
 import constants
+import math
+import limelight 
 
 class MyRobot(wpilib.TimedRobot):
     """
     This is a demo program showing the use of the DifferentialDrive class.
     Runs the motors with arcade steering.
-    """
-
+    """  
     def robotInit(self):
         """Robot initialization function"""
         self.pitch_motor = phoenix5.WPI_TalonFX(constants.PITCH_MOTOR_ID)
@@ -44,6 +45,10 @@ class MyRobot(wpilib.TimedRobot):
         self.lower_solenoid_1.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
         self.lower_solenoid_2.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
         self.lower_solenoid_3.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
+        self.discovered_limelights = limelight.discover_limelights(debug=True)
+        print("discovered limelights:", self.discovered_limelights)
+
+
         # We need to invert one side of the drivetrain so that positive voltages
         # result in both sides moving forward. Depending on how your robot's
         # gearbox is constructed, you might have to invert the left side instead.
@@ -76,8 +81,17 @@ class MyRobot(wpilib.TimedRobot):
             self.pitch_motor.set(math.cos(self.stick.getPOV(0) * math.pi / 180))
         else :
             self.pitch_motor.set(0)
+        if self.discovered_limelights:
+            limelight_address = self.discovered_limelights[0] 
+            ll = limelight.Limelight(limelight_address)
+            results = ll.get_results()
+            status = ll.get_status()
+            if results["botpose_tagcount"] != 0:
+                print("targeting results:", results["Fiducial"][0]["fID"])
 
         if self.stick.getRawButton(constants.FIRE_UPPER_BUTTON_ID) :
             self.fire_upper()
         if self.stick.getRawButton(constants.FIRE_LOWER_BUTTON_ID) :
             self.fire_lower()
+
+            
