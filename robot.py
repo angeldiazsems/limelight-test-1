@@ -12,86 +12,23 @@ import phoenix5
 import constants
 import math
 import limelight 
+import commands2
+import typing
 
-class MyRobot(wpilib.TimedRobot):
+from robotcontainer import RobotContainer
+
+class MyRobot(commands2.TimedCommandRobot):
     """
     This is a demo program showing the use of the DifferentialDrive class.
     Runs the motors with arcade steering.
     """  
+
+    autonomousCommand: typing.Optional[commands2.Command] = None
+
     def robotInit(self):
         """Robot initialization function"""
-        self.pitch_motor = phoenix5.WPI_TalonFX(constants.PITCH_MOTOR_ID)
-        self.pov_up_check = False
 
-        left_motor_1 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_1_ID)
-        left_motor_2 = phoenix5.WPI_TalonSRX(constants.LEFT_MOTOR_2_ID)
-        right_motor_1 = phoenix5.WPI_TalonSRX(constants.RIGHT_MOTOR_1_ID)
-        right_motor_2 = phoenix5.WPI_TalonSRX(constants.RIGHT_MOTOR_2_ID)
-        left_motor_1.follow(left_motor_2)
-        right_motor_1.follow(right_motor_2)
-        self.robot_drive = wpilib.drive.DifferentialDrive(left_motor_1, right_motor_1)
-        self.stick = wpilib.Joystick(constants.DRIVE_JOYSTICK_PORT)
-        pneumatic_hub = wpilib.PneumaticHub(constants.PNEUMATIC_HUB_PORT)
-        self.upper_solenoid_1 = pneumatic_hub.makeSolenoid(constants.UPPER_SOLENOID_1_CHANNEL)
-        self.upper_solenoid_2 = pneumatic_hub.makeSolenoid(constants.UPPER_SOLENOID_2_CHANNEL)
-        self.upper_solenoid_3 = pneumatic_hub.makeSolenoid(constants.UPPER_SOLENOID_3_CHANNEL)
-        self.lower_solenoid_1 = pneumatic_hub.makeSolenoid(constants.LOWER_SOLENOID_1_CHANNEL)
-        self.lower_solenoid_2 = pneumatic_hub.makeSolenoid(constants.LOWER_SOLENOID_2_CHANNEL)
-        self.lower_solenoid_3 = pneumatic_hub.makeSolenoid(constants.LOWER_SOLENOID_3_CHANNEL)
-
-        self.upper_solenoid_1.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
-        self.upper_solenoid_2.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
-        self.upper_solenoid_3.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
-        self.lower_solenoid_1.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
-        self.lower_solenoid_2.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
-        self.lower_solenoid_3.setPulseDuration(constants.SOLENOID_PULSE_LENGTH)
-        self.discovered_limelights = limelight.discover_limelights(debug=True)
-        print("discovered limelights:", self.discovered_limelights)
-
-
-        # We need to invert one side of the drivetrain so that positive voltages
-        # result in both sides moving forward. Depending on how your robot's
-        # gearbox is constructed, you might have to invert the left side instead.
-        right_motor_1.setInverted(True)
-
-    # def RobotPeriodic(self):
-    #     # Drive with arcade drive.
-    #     # That means that the Y axis drives forward
-    #     # and backward, and the X turns left and right.
-    #     self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
-        # self.left_motor_1.set(self.stick.getY())
-
-    def fire_upper(self) :
-        self.upper_solenoid_1.startPulse()
-        self.upper_solenoid_2.startPulse()
-        self.upper_solenoid_3.startPulse()
-
-    def fire_lower(self) :
-        self.lower_solenoid_1.startPulse()
-        self.lower_solenoid_2.startPulse()
-        self.lower_solenoid_3.startPulse()
-
-
+        self.container = RobotContainer()
     def teleopPeriodic(self):
-        # Drive with arcade drive.
-        # That means that the Y axis drives forward
-        # and backward, and the X turns left and right.
-        self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getZ())
-        if self.stick.getPOV(0) != -1 :
-            self.pitch_motor.set(math.cos(self.stick.getPOV(0) * math.pi / 180))
-        else :
-            self.pitch_motor.set(0)
-        if self.discovered_limelights:
-            limelight_address = self.discovered_limelights[0] 
-            ll = limelight.Limelight(limelight_address)
-            results = ll.get_results()
-            status = ll.get_status()
-            if results["botpose_tagcount"] != 0:
-                print("targeting results:", results["Fiducial"][0]["fID"])
-
-        if self.stick.getRawButton(constants.FIRE_UPPER_BUTTON_ID) :
-            self.fire_upper()
-        if self.stick.getRawButton(constants.FIRE_LOWER_BUTTON_ID) :
-            self.fire_lower()
-
+        commands2.CommandScheduler.getInstance().run()
             
