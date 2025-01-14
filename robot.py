@@ -14,8 +14,12 @@ import math
 import limelight 
 import commands2
 import typing
+import commands.arcadedrive
+import autoCmd
 
 from robotcontainer import RobotContainer
+from commands.limelightdisplay import limelightDisplay
+
 
 class MyRobot(commands2.TimedCommandRobot):
     """
@@ -27,8 +31,16 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def robotInit(self):
         """Robot initialization function"""
-
         self.container = RobotContainer()
+
+
     def teleopPeriodic(self):
         commands2.CommandScheduler.getInstance().run()
-            
+
+    def autonomousPeriodic(self):
+        commands2.CommandScheduler.getInstance().run()
+
+    def autonomousInit(self):
+        self.container.auto.schedule()
+
+
